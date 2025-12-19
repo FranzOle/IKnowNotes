@@ -1,0 +1,53 @@
+from django.db import models
+from django.contrib.auth.models import User
+
+
+class Folder(models.Model):
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='folders'
+    )
+    name = models.CharField(max_length=100)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
+
+
+class Note(models.Model):
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='notes'
+    )
+    folder = models.ForeignKey(
+        Folder,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='notes'
+    )
+
+    title = models.CharField(max_length=200)
+    content = models.TextField()
+
+    color = models.CharField(
+        max_length=20,
+        blank=True,
+        null=True
+    )
+
+    is_pinned = models.BooleanField(default=False)
+    is_archived = models.BooleanField(default=False)
+
+    reminder_time = models.DateTimeField(null=True, blank=True)
+    is_reminded = models.BooleanField(default=False)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.title
