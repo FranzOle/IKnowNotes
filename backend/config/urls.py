@@ -6,6 +6,8 @@ from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
+from notes.views import RegisterView
+
 
 router = DefaultRouter()
 router.register(r'folders', FolderViewSet, basename='folder')
@@ -14,6 +16,7 @@ router.register(r'notes', NoteViewSet, basename='note')
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
+    path('api/register/', RegisterView.as_view(), name='register'),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]
